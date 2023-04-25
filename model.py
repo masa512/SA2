@@ -140,7 +140,7 @@ class PConvUNet(nn.Module):
         self.dec_4 = PConvActiv(512+256, 256, dec=True, active='leaky')
         self.dec_3 = PConvActiv(256+128, 128, dec=True, active='leaky')
         self.dec_2 = PConvActiv(128+64,   64, dec=True, active='leaky')
-        self.dec_1 = PConvActiv(64+3,      3, dec=True, bn=False,
+        self.dec_1 = PConvActiv(64+in_ch,      in_ch, dec=True, bn=False,
                                 active=None, conv_bias=True)
 
     def forward(self, img, mask):
