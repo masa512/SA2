@@ -46,9 +46,15 @@ class perceptual_loss(nn.Module):
 
 
     # Save losses separately
-    losses = []
-    for i in idx:
-      losses.append(self.crit(self.blocks[i](Igt),self.blocks[i](Ipred)))
+    max_idx = max(idx)
+    losses = 0
+    hgt = Igt
+    hpred = Ipred
+    for i in range(max_idx+1):
+      hgt = self.blocks[i](hgt)
+      hpred = self.blocks[i](hpred)
+      if i in idx:
+        losses = losses + self.crit(hgt,hpred)
 
     # Sum of the losses
-    return sum(losses)  
+    return losses

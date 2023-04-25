@@ -32,11 +32,11 @@ class simple_dataset(Dataset):
     # Generate mask
     M = torch.ones_like(I).float()
     #min0 = M.shape[0]//2 - self.box_dim[0]//2
-    min0 = 128-20
+    min0 = 128-50
     #min1 = M.shape[1]//2 - self.box_dim[1]//2
     min1 = min0
     #max0 = M.shape[0]//2 + self.box_dim[0]//2
-    max0 = 128+20
+    max0 = 128+50
     #max1 = M.shape[1]//2 + self.box_dim[1]//2
     max1=max0
     M[0,min0:max0,min1:max1] = 0.0
