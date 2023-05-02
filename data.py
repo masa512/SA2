@@ -3,6 +3,7 @@ import os
 import torch
 import numpy as np
 from torch.utils.data import Dataset
+import SA_sample
 
 def read_image(image_path = ''):
     """
@@ -43,3 +44,23 @@ class simple_dataset(Dataset):
 
     # Mask the input
     return I,M
+
+class SA_dataset(Dataset):
+  
+  def __init__(self,path = 'data', mode = 'train', box_dim = (50,50)):
+    self.path = os.path.join(path,mode)
+    self.file_list = [fn for fn in os.listdir(self.path) if fn.endswith('.jpg')]
+    self.box_dim = box_dim
+  
+  def __len__(self):
+    return len(self.file_list)
+
+  def __getitem__(self,idx):
+    image_path = os.path.join(self.path,self.file_list[idx])
+    I = np.mean(read_image(image_path),axis=-1,keepdims=False)
+    I = torch.Tensor(I).view(1,I.shape[1],I.shape[0]).float()
+    
+    I_SA,M = SA_sample.synthetic_sample(I,5,30)
+
+    # Mask the input
+    return I,I_SA,M
